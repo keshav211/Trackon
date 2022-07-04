@@ -13,8 +13,8 @@ from sqlalchemy import exc
 def home():
     return render_template("home.html")
 
-
 @app.route("/track", methods=['GET', 'POST'])
+@login_required
 def track():
     if request.method == 'POST':
         title = request.form['track_variable']
@@ -32,6 +32,7 @@ def track():
     return render_template('track.html', outpage=outputpage)
 
 @app.route("/track/delete/<int:sno>")
+@login_required
 def track_delete(sno):
     task_table=Tracker.query.filter_by(sno=sno).first()
     db.session.delete(task_table)
@@ -39,6 +40,7 @@ def track_delete(sno):
     return redirect("/track")  
 
 @app.route('/log', methods=['GET','POST'])
+@login_required
 def log():
     if request.method=='POST':
         title=request.form['title']
@@ -51,6 +53,7 @@ def log():
     return render_template('log.html',outputpage=outputpage)    
 
 @app.route("/log/update/<int:sno>",  methods=['GET', 'POST'])
+@login_required
 def log_update(sno):
     if request.method=='POST':
         title=request.form['title']
@@ -68,6 +71,7 @@ def log_update(sno):
     return render_template('updatelog.html',taskupdate=task_table)  
 
 @app.route("/log/delete/<int:sno>")
+@login_required
 def log_delete(sno):
     task_table=Inputaken.query.filter_by(sno=sno).first()
     db.session.delete(task_table)
