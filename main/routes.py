@@ -3,7 +3,7 @@ import os
 from flask import render_template, url_for, flash, redirect, request
 from main import app, db, bcrypt
 from main.forms import RegistrationForm, LoginForm, UpdateAccountForm
-from main.models import User, Tracker
+from main.models import User, Tracker,Inputaken
 from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 from sqlalchemy import exc
@@ -31,13 +31,49 @@ def track():
     outputpage = Tracker.query.all()
     return render_template('track.html', outpage=outputpage)
 
-
-@app.route("/delete/<int:sno>")
-def delete(sno):
+@app.route("/track/delete/<int:sno>")
+def track_delete(sno):
     task_table=Tracker.query.filter_by(sno=sno).first()
     db.session.delete(task_table)
     db.session.commit()
     return redirect("/track")  
+
+@app.route('/log', methods=['GET','POST'])
+def log():
+    if request.method=='POST':
+        title=request.form['title']
+        value=request.form['value']
+        variable=request.form['variable']
+        task_table=Inputaken(task_title=title,task_value=value,task_variable=variable)
+        db.session.add(task_table)
+        db.session.commit()
+    outputpage=Inputaken.query.all()
+    return render_template('log.html',outputpage=outputpage)    
+
+@app.route("/log/update/<int:sno>",  methods=['GET', 'POST'])
+def log_update(sno):
+    if request.method=='POST':
+        title=request.form['title']
+        value=request.form['value']
+        variable=request.form['variable']
+        task_table=Inputaken.query.filter_by(sno=sno).first()
+        task_table.task_title=title
+        task_table.task_value=value
+        task_table.task_variable=variable
+        db.session.add(task_table)
+        db.session.commit()
+        return redirect('/log')
+
+    task_table=Inputaken.query.filter_by(sno=sno).first()
+    return render_template('updatelog.html',taskupdate=task_table)  
+
+@app.route("/log/delete/<int:sno>")
+def log_delete(sno):
+    task_table=Inputaken.query.filter_by(sno=sno).first()
+    db.session.delete(task_table)
+    db.session.commit()
+    return redirect("/log")    
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
-{% block title %} Home{% endblock title %} 
-{% block body %}
-
-
+{% block content %}
 <div class="container">
     <div class="track_type">
         <h1>update tasks</h1>
     </div>
-    <form action="/update/{{taskupdate.sno}}" method="POST">
+    <form action="/log/update/{{taskupdate.sno}}" method="POST">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Enter the task <title></title></label>
             <input type="text" class="form-control" name="title" id="text-title" value="{{taskupdate.task_title}}">
@@ -30,7 +27,4 @@
 
 </div>
 
-
-
-
-{% endblock body %} 
+{% endblock content %} 
