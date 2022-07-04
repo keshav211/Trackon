@@ -65,51 +65,34 @@
     </div>
     {% else %}
         {% if outpage|length == 6 %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Sl.no</th>
-                    <th scope="col">Tracker name</th>
-                    <th scope="col">Variable Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for inpt in outpage %}
-                <tr>
-                    <th scope="row">{{loop.index}}</td>
-                    <td>{{inpt.tracker_name}}</td>
-                    <td>{{inpt.task_value_type}}</td>
-                    <td><a href="/delete/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">Delete</button>
-                        <a href="/view/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">View</button>
-                        </td>
-                </tr>
-                {% endfor %}
+        {% for inpt in outpage %}
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{inpt.tracker_name}}</h5>
+              <p class="card-text">Something</p>
+              <a href="/delete/{{inpt.sno}}" type="button"
+                    class="btn btn-outline-dark btn-sm mx-1">Delete</a>
+                    <a href="/view/{{inpt.sno}}" type="button"
+                    class="btn btn-outline-dark btn-sm mx-1">View</a>
+            </div>
+        </div>    
+        {% endfor %}
 
         {% else %}
-        <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Sl.no</th>
-                    <th scope="col">Tracker name</th>
-                    <th scope="col">Variable Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for inpt in outpage %}
-                <tr>
-                    <th scope="row">{{loop.index}}</td>
-                    <td>{{inpt.tracker_name}}</td>
-                    <td>{{inpt.task_value_type}}</td>
-                    <td> <a href="/delete/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">Delete</button>
+        {% for inpt in outpage %}
+            <div class="card">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{inpt.tracker_name}}</h5>
+                  <p class="card-text">Something</p>
+                  <a href="/delete/{{inpt.sno}}" type="button"
+                        class="btn btn-outline-dark btn-sm mx-1">Delete</a>
                         <a href="/view/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">View</button></td>
-                </tr>
-                {% endfor %}
-            </div>
+                        class="btn btn-outline-dark btn-sm mx-1">View</a>
+                </div>
+              </div>
+            {% endfor %}
                 <div class="container">
                     <form action="/" method="POST">
                         <div class="form">
@@ -134,10 +117,8 @@
                         </div>
                     </form>
                 </div>
-
+    
         {% endif %}
-        </tbody>
-    </table>
     {% endif %}
 
 
