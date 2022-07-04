@@ -40,7 +40,7 @@
     {% if outpage|length == 0 %}
 
     <div class="container">
-        <form action="/" method="POST">
+        <form action="/track" method="POST">
             <div class="form">
                 <label for="inputState">Select Your Tracker...</label><br><br>
                 <select id="inputState" class="form-control" name="track_variable">
@@ -94,7 +94,7 @@
               </div>
             {% endfor %}
                 <div class="container">
-                    <form action="/" method="POST">
+                    <form action="/track" method="POST">
                         <div class="form">
                             <label for="inputState">Select Your Tracker...</label><br>
                             <select id="inputState" class="form-control" name="track_variable">
@@ -120,12 +120,6 @@
     
         {% endif %}
     {% endif %}
-
-
-
-
-
-
 </body>
 <footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

@@ -2,26 +2,42 @@ import secrets
 import os
 from flask import render_template, url_for, flash, redirect, request
 from main import app, db, bcrypt
-from main.forms import RegistrationForm, LoginForm,UpdateAccountForm
-from main.models import User
+from main.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from main.models import User, Tracker
 from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
+from sqlalchemy import exc
 
 
 @app.route("/")
-def index():
-    return "<h1>Hello</h1>"
-
-
-@app.route("/home")
 def home():
     return render_template("home.html")
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html", title="About")
+@app.route("/track", methods=['GET', 'POST'])
+def track():
+    if request.method == 'POST':
+        title = request.form['track_variable']
+        variable = request.form['track_type']
+        task_table = Tracker(tracker_name=title, task_value_type=variable)
+        if task_table not in db.session:
+            try:
+                db.session.add(task_table)
+                db.session.commit()
+            except exc.IntegrityError:
+                db.session.rollback()
+        else:
+            return redirect("/track")
+    outputpage = Tracker.query.all()
+    return render_template('track.html', outpage=outputpage)
 
+
+@app.route("/delete/<int:sno>")
+def delete(sno):
+    task_table=Tracker.query.filter_by(sno=sno).first()
+    db.session.delete(task_table)
+    db.session.commit()
+    return redirect("/track")  
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -61,34 +77,36 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
-    _,f_ext=os.path.splitext(form_picture.filename)
+    _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path,'static/images',picture_fn)
-    output_size = (125,125)
+    picture_path = os.path.join(app.root_path, 'static/images', picture_fn)
+    output_size = (125, 125)
     image = Image.open(form_picture)
     image.thumbnail(output_size)
     image.save(picture_path)
 
     return picture_fn
-   
 
-@app.route("/account",methods=['GET','POST'])
+
+@app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    image_file = url_for('static', filename='images/' + current_user.image_file)
-    form=UpdateAccountForm()
+    image_file = url_for('static', filename='images/' +
+                         current_user.image_file)
+    form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-        current_user.username=form.username.data
-        current_user.email=form.email.data
+        current_user.username = form.username.data
+        current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated!','success')
+        flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
-    elif request.method=='GET':
-        form.username.data=current_user.username
-        form.email.data=current_user.email    
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     return render_template("account.html", title="Account", image_file=image_file, form=form)
