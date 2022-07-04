@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+<div class="container">
+    <div class="track_type">
+        <h1>Tracker name</h1>
+    </div>
+
+
+    <form action="/" method="POST">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Enter the task <title></title></label>
+            <input type="text" class="form-control" name="title" id="text-title">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Enter the value</label>
+            <input type="text" class="form-control" name="value" id="exampleInputPassword1">
+        </div>
+        <!-- <div>
+        <label>Select a Date and time:</label>
+        <input type = "date" name="date"><input type="time" name="time">
+        </div> -->
+        <label for="inputState" class="form-label">Type of variable</label>
+        <select id="inputState" class="form-select" name="variable">
+            <option selected></option>
+            <option>Boolean</option>
+            <option>Number</option>
+            <option>value</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br><br>
+
+
+    <h2>Your logged entries</h2><br><br>
+    {% if outputpage|length == 0 %}
+
+    <div class="alert alert-dark" role="alert">
+        No Task details found. Add your first task now!
+    </div>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Sl.no</th>
+                <th scope="col">Task</th>
+                <th scope="col">Task value</th>
+                <th scope="col">Variable type</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+
+
+
+        <tbody>
+            {% for inpt in outputpage %}
+            <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{inpt.task_title}}</td>
+                <td>{{inpt.task_value}}</td>
+                <td>{{inpt.task_variable}}</td>
+                <td>{{inpt.task_date}}</td>
+                <td><a href="/update/{{inpt.sno}}" type="button"
+                        class="btn btn-outline-dark btn-sm mx-1">Update</button>
+                        <a href="/delete/{{inpt.sno}}" type="button"
+                            class="btn btn-outline-dark btn-sm mx-1">Delete</button></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+
+
+
+
+{% endblock body %}
