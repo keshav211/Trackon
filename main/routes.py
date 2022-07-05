@@ -52,7 +52,7 @@ def log():
     outputpage=Inputaken.query.all()
     return render_template('log.html',outputpage=outputpage)    
 
-@app.route("/log/update/<int:sno>",  methods=['GET', 'POST'])
+@app.route("/log/update/<int:sno>", methods=['GET', 'POST'])
 @login_required
 def log_update(sno):
     if request.method=='POST':
