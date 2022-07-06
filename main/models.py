@@ -15,7 +15,10 @@ class Inputaken(db.Model):
     task_variable = db.Column(db.String(20), nullable=False)
 
     def __repr__(self) -> str:
-        return f"{self.sno} - {self.task_title}"
+        return f"(value:'{self.task_value}', timestamp:'{self.task_date}')"
+
+    def __getitem__(self,key):
+        return self.__dict__[key]
 
 
 class User(db.Model, UserMixin):

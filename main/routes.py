@@ -7,6 +7,7 @@ from main.models import User, Tracker, Inputaken
 from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 from sqlalchemy import exc
+from main.chart import *
 
 
 @app.route("/")
@@ -124,6 +125,13 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route("/dashboard")
+def graphs():
+    tracker_stats=Inputaken.query.all()
+    line_plot(tracker_stats)
+    return render_template("chart.html")
+    
 
 
 def save_picture(form_picture):
