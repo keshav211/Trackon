@@ -33,6 +33,8 @@ def track():
             return redirect("/track")
     user = User.query.filter_by(id=current_user.id).first()
     outputpage = user.trackers
+    if(len(outputpage) == 0):
+        return render_template("track.html", title="Track")
     return render_template('track.html', outpage=outputpage)
 
 
@@ -126,12 +128,13 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
 @app.route("/dashboard")
-def graphs():
-    tracker_stats=Inputaken.query.all()
+@login_required
+def dashboard():
+    tracker_stats = Inputaken.query.all()
     line_plot(tracker_stats)
     return render_template("chart.html")
-    
 
 
 def save_picture(form_picture):

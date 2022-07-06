@@ -1,90 +1,56 @@
-{% extends 'base.html' %}
-{% block content %}
-
-
-    {% if outpage|length == 0 %}
-
-    <div class="container">
-        <form action="/track" method="POST">
-            <div class="form">
-                <label for="inputState">Select Your Tracker...</label><br><br>
-                <select id="inputState" class="form-control" name="track_variable">
-                    <option selected></option>
-                    <option>Sleep Tracker</option>
-                    <option>Food Tracker</option>
-                    <option>Smile Tracker</option>
-                    <option>Water Tracker</option>
-                    <option>Walk Tracker</option>
-                    <option>Money Spent Tracker</option>
-                </select><br><br>
-                <label for="inputState" class="form-label">Type of variable</label>
-                <select id="inputState" class="form-select" name="track_type">
-                    <option selected></option>
-                    <option>Boolean</option>
-                    <option>Number</option>
-                    <option>value</option>
-                </select><br>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
+{% extends 'base.html' %} {% block content %}
+<div class="container track-heading">
+  <h1>Add Your Trackers</h1>
+</div>
+<div class="container track-input">
+  <form action="/track" method="POST">
+    <div class="form">
+      <label for="inputState">Select Your Tracker...</label><br /><br />
+      <select id="inputState" class="form-control" name="track_variable">
+        <option selected></option>
+        <option>Sleep Tracker</option>
+        <option>Food Tracker</option>
+        <option>Smile Tracker</option>
+        <option>Water Tracker</option>
+        <option>Walk Tracker</option>
+        <option>Money Spent Tracker</option></select
+      ><br /><br />
+      <label for="inputState" class="form-label">Type of variable</label>
+      <select id="inputState" class="form-select" name="track_type">
+        <option selected></option>
+        <option>Boolean</option>
+        <option>Number</option>
+        <option>value</option></select
+      ><br />
+      <div class="track-btn">
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
     </div>
-    {% else %}
-        {% if outpage|length == 6 %}
-        {% for inpt in outpage %}
-        <div class="card">
-            <img class="card-img-top" src="..." alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">{{inpt.tracker_name}}</h5>
-              <p class="card-text">Something</p>
-              <a href="/track/delete/{{inpt.sno}}" type="button"
-                    class="btn btn-outline-dark btn-sm mx-1">Delete</a>
-                    <a href="/view/{{inpt.sno}}" type="button"
-                    class="btn btn-outline-dark btn-sm mx-1">View</a>
-            </div>
-        </div>    
-        {% endfor %}
+  </form>
+</div>
 
-        {% else %}
-        {% for inpt in outpage %}
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">{{inpt.tracker_name}}</h5>
-                  <p class="card-text">Something</p>
-                  <a href="/track/delete/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">Delete</a>
-                        <a href="/view/{{inpt.sno}}" type="button"
-                        class="btn btn-outline-dark btn-sm mx-1">View</a>
-                </div>
-              </div>
-            {% endfor %}
-                <div class="container">
-                    <form action="/track" method="POST">
-                        <div class="form">
-                            <label for="inputState">Select Your Tracker...</label><br>
-                            <select id="inputState" class="form-control" name="track_variable">
-                                <option selected></option>
-                                <option>Sleep Tracker</option>
-                                <option>Food Tracker</option>
-                                <option>Smile Tracker</option>
-                                <option>Water Tracker</option>
-                                <option>Walk Tracker</option>
-                                <option>Money Spent Tracker</option>
-                            </select><br>
-                            <label for="inputState" class="form-label">Type of variable</label>
-                            <select id="inputState" class="form-select" name="track_type">
-                                <option selected></option>
-                                <option>Boolean</option>
-                                <option>Number</option>
-                                <option>value</option>
-                            </select><br>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-    
-        {% endif %}
-    {% endif %}
-
-
-{% endblock content %}
+{% if outpage%}
+<div class="container track-card-container">
+  {% for inpt in outpage %}
+  <div class="card track-card">
+    <img class="card-img-top" src="..." alt="Card image cap" />
+    <div class="card-body">
+      <h5 class="card-title">{{inpt.tracker_name}}</h5>
+      <p class="card-text">Something</p>
+      <a
+        href="/track/delete/{{inpt.sno}}"
+        type="button"
+        class="btn btn-danger"
+        >Delete</a
+      >
+      <a
+        href="/log/{{inpt.sno}}"
+        type="button"
+        class="btn btn-primary"
+        >View</a
+      >
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %} {% endblock content %}

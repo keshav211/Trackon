@@ -1,3 +1,25 @@
 body{
     background-color: #f2f2f2;
 }
+.track-input{
+    width: 40%;
+    padding-top: 20px;
+}
+.track-heading{
+    text-align: center;
+    padding-top: 20px;
+}
+.track-btn{
+    text-align: center;
+}
+.track-card-container{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    flex-wrap: wrap;
+    padding-top: 20px;
+}
+.track-card{
+    width:300px;
+    margin: 20px 20px;
+}
