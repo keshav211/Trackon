@@ -2,9 +2,9 @@
 {% block content %}
 <div class="container">
     <div class="track_type">
-        <h1>Tracker name</h1>
+        <h1>{{task.tracker_name}}</h1>
     </div>
-    <form action="/log" method="POST">
+    <form action="/log/{{task.sno}}" method="POST">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Enter the task <title></title></label>
             <input type="text" class="form-control" name="title" id="text-title">
@@ -18,12 +18,7 @@
         <input type = "date" name="date"><input type="time" name="time">
         </div> -->
         <label for="inputState" class="form-label">Type of variable</label>
-        <select id="inputState" class="form-select" name="variable">
-            <option selected></option>
-            <option>Boolean</option>
-            <option>Number</option>
-            <option>value</option>
-        </select>
+        <input type="text" disabled=true class="form-control" value={{task.task_value_type}}>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <br><br>

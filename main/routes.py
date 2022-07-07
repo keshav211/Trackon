@@ -47,19 +47,23 @@ def track_delete(sno):
     return redirect("/track")
 
 
-@app.route('/log', methods=['GET', 'POST'])
+@app.route("/log/<int:sno>", methods=['GET', 'POST'])
 @login_required
-def log():
-    if request.method == 'POST':
+def log(sno):
+    task_table = Tracker.query.filter_by(sno=sno).first()
+    outputpage = Inputaken.query.filter_by(
+        tracker_id=sno, user_id=current_user.id).all()
+    if request.method == 'GET':
+        return render_template('log.html', task=task_table, outputpage=outputpage)
+    else:
         title = request.form['title']
         value = request.form['value']
-        variable = request.form['variable']
-        task_table = Inputaken(
-            task_title=title, task_value=value, task_variable=variable)
-        db.session.add(task_table)
+        variable = task_table.task_value_type
+        log_table = Inputaken(
+            task_title=title, task_value=value, task_variable=variable, user_id=current_user.id, tracker_id=task_table.sno)
+        db.session.add(log_table)
         db.session.commit()
-    outputpage = Inputaken.query.all()
-    return render_template('log.html', outputpage=outputpage)
+        return render_template('log.html', task=task_table, outputpage=outputpage)
 
 
 @app.route("/log/update/<int:sno>", methods=['GET', 'POST'])
@@ -68,14 +72,12 @@ def log_update(sno):
     if request.method == 'POST':
         title = request.form['title']
         value = request.form['value']
-        variable = request.form['variable']
         task_table = Inputaken.query.filter_by(sno=sno).first()
         task_table.task_title = title
         task_table.task_value = value
-        task_table.task_variable = variable
         db.session.add(task_table)
         db.session.commit()
-        return redirect('/log')
+        return redirect("/log/"+str(task_table.tracker_id))
 
     task_table = Inputaken.query.filter_by(sno=sno).first()
     return render_template('updatelog.html', taskupdate=task_table)
@@ -87,7 +89,7 @@ def log_delete(sno):
     task_table = Inputaken.query.filter_by(sno=sno).first()
     db.session.delete(task_table)
     db.session.commit()
-    return redirect("/log")
+    return redirect("/log/"+str(task_table.tracker_id))
 
 
 @app.route("/register", methods=['GET', 'POST'])
