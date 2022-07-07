@@ -21,8 +21,12 @@ def track():
     if request.method == 'POST':
         title = request.form['track_variable']
         variable = request.form['track_type']
-        task_table = Tracker(tracker_name=title,
-                             task_value_type=variable, user_id=current_user.id)
+        if(title == 'Select option' or variable == 'Select option'):
+            flash('Please select a valid option', 'danger')
+            return redirect(url_for('track'))
+        else:
+            task_table = Tracker(tracker_name=title,
+                                 task_value_type=variable, user_id=current_user.id)
         if task_table not in db.session:
             try:
                 db.session.add(task_table)
@@ -30,7 +34,8 @@ def track():
             except exc.IntegrityError:
                 db.session.rollback()
         else:
-            return redirect("/track")
+            return redirect(url_for('track'))
+
     user = User.query.filter_by(id=current_user.id).first()
     outputpage = user.trackers
     if(len(outputpage) == 0):
@@ -51,19 +56,22 @@ def track_delete(sno):
 @login_required
 def log(sno):
     task_table = Tracker.query.filter_by(sno=sno).first()
-    outputpage = Inputaken.query.filter_by(
-        tracker_id=sno, user_id=current_user.id).all()
-    if request.method == 'GET':
-        return render_template('log.html', task=task_table, outputpage=outputpage)
-    else:
+    if request.method == 'POST':
         title = request.form['title']
         value = request.form['value']
         variable = task_table.task_value_type
-        log_table = Inputaken(
-            task_title=title, task_value=value, task_variable=variable, user_id=current_user.id, tracker_id=task_table.sno)
-        db.session.add(log_table)
-        db.session.commit()
-        return render_template('log.html', task=task_table, outputpage=outputpage)
+        if(title == '' or value == ''):
+            flash('please enter valid values', 'danger')
+            return redirect(url_for('log', sno=sno))
+        else:
+            log_table = Inputaken(task_title=title, task_value=value, task_variable=variable,
+                                  user_id=current_user.id, tracker_id=task_table.sno)
+            db.session.add(log_table)
+            db.session.commit()
+            return redirect("/log/" + str(task_table.sno))
+    outputpage = Inputaken.query.filter_by(
+        tracker_id=sno, user_id=current_user.id).all()
+    return render_template('log.html', task=task_table, outputpage=outputpage)
 
 
 @app.route("/log/update/<int:sno>", methods=['GET', 'POST'])
