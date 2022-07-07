@@ -23,3 +23,40 @@ body{
     width:300px;
     margin: 20px 20px;
 }
+
+.log-div{
+    width: 50%;
+}
+
+.log-heading{
+    text-align: center;
+    padding-top: 20px;
+}
+
+.log-btn-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.log-btn-group button{
+    margin-left: 20px;
+}
+
+.log-entry-heading{
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+}
+.entry-btn-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+@media screen and (max-width: 800px) {
+    .log-div{
+        width: 90%;
+    }
+}

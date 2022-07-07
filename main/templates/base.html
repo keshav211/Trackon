@@ -42,9 +42,8 @@
           >
           {% if current_user.is_authenticated %}
           <a class="nav-link px-2" href="{{url_for('track')}}">Trackers</a>
-          <a class="nav-link px-2" href="{{url_for('dashboard')}}">dashboard</a>
-          <a class="nav-link px-2" href="{{url_for('logout')}}">Logout</a>
           <a class="nav-link px-2" href="{{url_for('account')}}">Account</a>
+          <a class="nav-link px-2" href="{{url_for('logout')}}">Logout</a>
           {% else %}
           <a class="nav-link px-2" href="{{url_for('login')}}">Login</a>
           <a class="nav-link px-2" href="{{url_for('register')}}">Register</a>
