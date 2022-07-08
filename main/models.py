@@ -1,8 +1,6 @@
-from zoneinfo import ZoneInfo
+from sqlalchemy.sql import func
 from main import db, login_manager
 from flask_login import UserMixin
-from datetime import datetime
-from dateutil.tz import gettz
 
 
 @login_manager.user_loader
@@ -15,7 +13,7 @@ class Inputaken(db.Model):
     task_title = db.Column(db.String(300), nullable=False)
     task_value = db.Column(db.Integer, nullable=False)
     task_date = db.Column(
-        db.DateTime, default=datetime.now(tz=gettz('Asia/Kolkata')))
+        db.DateTime(timezone=True),default=func.now(), nullable=False)
     task_variable = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey(
