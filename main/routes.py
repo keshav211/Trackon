@@ -14,7 +14,6 @@ from main.chart import *
 def home():
     return render_template("home.html")
 
-
 @app.route("/track", methods=['GET', 'POST'])
 @login_required
 def track():
@@ -35,7 +34,6 @@ def track():
                 db.session.rollback()
         else:
             return redirect(url_for('track'))
-
     user = User.query.filter_by(id=current_user.id).first()
     outputpage = user.trackers
     if(len(outputpage) == 0):
@@ -61,7 +59,7 @@ def log(sno):
         value = request.form['value']
         variable = task_table.task_value_type
         if(title == '' or value == ''):
-            flash('please enter valid values', 'danger')
+            flash('please enter valid values','danger')
             return redirect(url_for('log', sno=sno))
         else:
             log_table = Inputaken(task_title=title, task_value=value, task_variable=variable,
@@ -86,7 +84,6 @@ def log_update(sno):
         db.session.add(task_table)
         db.session.commit()
         return redirect("/log/"+str(task_table.tracker_id))
-
     task_table = Inputaken.query.filter_by(sno=sno).first()
     return render_template('updatelog.html', taskupdate=task_table)
 
@@ -143,7 +140,11 @@ def logout():
 @login_required
 def dashboard():
     tracker_stats = Inputaken.query.all()
-    line_plot(tracker_stats)
+    if tracker_stats:
+            try:
+                line_plot(tracker_stats)       
+            except:
+                pie_chart(tracker_stats)
     return render_template("chart.html")
 
 
@@ -158,7 +159,6 @@ def save_picture(form_picture):
     image.save(picture_path)
 
     return picture_fn
-
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
