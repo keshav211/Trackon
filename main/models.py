@@ -17,7 +17,7 @@ class Inputaken(db.Model):
     task_variable = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey(
-        'tracker.sno'), nullable=True)
+        'tracker.sno'), nullable=False)
 
     def __repr__(self) -> str:
         return f"(value:'{self.task_value}', timestamp:'{self.task_date}')"
@@ -42,10 +42,10 @@ class User(db.Model, UserMixin):
 
 class Tracker(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
-    tracker_name = db.Column(db.String(300), nullable=False, unique=True)
+    tracker_name = db.Column(db.String(300), nullable=False)
     task_value_type = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     logs = db.relationship('Inputaken', backref='tracker', lazy=True)
 
     def __repr__(self) -> str:
-        return f"{self.sno} - {self.tracker_name} - {self.task_value_type}"
+        return f"{self.tracker_name}"

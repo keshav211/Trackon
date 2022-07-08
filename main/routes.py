@@ -1,6 +1,7 @@
 import secrets
 import os
 from flask import render_template, url_for, flash, redirect, request
+from matplotlib.style import use
 from main import app, db, bcrypt
 from main.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from main.models import User, Tracker, Inputaken
@@ -26,16 +27,25 @@ def track():
         else:
             task_table = Tracker(tracker_name=title,
                                  task_value_type=variable, user_id=current_user.id)
-        if task_table not in db.session:
-            try:
-                db.session.add(task_table)
-                db.session.commit()
-            except exc.IntegrityError:
-                db.session.rollback()
+        user = Tracker.query.filter(Tracker.user_id == current_user.id).all()                        
+        if len(user)!=0:
+            for i in user:
+                if str(i)!=title:
+                    try:
+                        db.session.add(task_table)
+                        db.session.commit()
+                    except exc.IntegrityError:
+                        db.session.rollback()
+                else:
+                    return redirect(url_for('track'))
         else:
-            return redirect(url_for('track'))
+            db.session.add(task_table)
+            db.session.commit()             
+            
+     
     user = User.query.filter_by(id=current_user.id).first()
     outputpage = user.trackers
+    outputpage=Tracker.query.filter_by(user_id=current_user.id).all()
     if(len(outputpage) == 0):
         return render_template("track.html", title="Track")
     return render_template('track.html', outpage=outputpage)
