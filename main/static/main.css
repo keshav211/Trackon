@@ -57,3 +57,11 @@
         width: 90%;
     }
 }
+
+.home-img{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+ 
