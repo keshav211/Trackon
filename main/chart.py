@@ -9,8 +9,8 @@ plt.style.use("seaborn")
 def line_plot(tracker_stats):
     x, y = [], []
     for log in tracker_stats:
-        log_date = str(log["task_date"])[0:-10]
-        test = datetime.strptime(log_date,'%Y-%m-%d %H:%M')
+        log_date = str(log["task_date"])
+        test = datetime.strptime(log_date,'%Y-%m-%d %H:%M:%S')
         test=str(test)
         x.append(test)
         y.append(float(log["task_value"]))

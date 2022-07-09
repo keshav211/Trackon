@@ -1,6 +1,8 @@
 import secrets
 import os
+from tkinter import Variable
 from flask import render_template, url_for, flash, redirect, request
+from matplotlib.style import use
 from main import app, db, bcrypt
 from main.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from main.models import User, Tracker, Inputaken
@@ -26,16 +28,25 @@ def track():
         else:
             task_table = Tracker(tracker_name=title,
                                  task_value_type=variable, user_id=current_user.id)
-        if task_table not in db.session:
-            try:
-                db.session.add(task_table)
-                db.session.commit()
-            except exc.IntegrityError:
-                db.session.rollback()
+        user = Tracker.query.filter(Tracker.user_id == current_user.id).all()                        
+        if len(user)!=0:
+            for i in user:
+                if str(i)!=title:
+                    try:
+                        db.session.add(task_table)
+                        db.session.commit()
+                    except exc.IntegrityError:
+                        db.session.rollback()
+                else:
+                    return redirect(url_for('track'))
         else:
-            return redirect(url_for('track'))
+            db.session.add(task_table)
+            db.session.commit()             
+            
+     
     user = User.query.filter_by(id=current_user.id).first()
     outputpage = user.trackers
+    outputpage=Tracker.query.filter_by(user_id=current_user.id).all()
     if(len(outputpage) == 0):
         return render_template("track.html", title="Track")
     return render_template('track.html', outpage=outputpage)
@@ -136,15 +147,14 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/dashboard")
+@app.route("/log/dashboard/<int:sno>")
 @login_required
-def dashboard():
-    tracker_stats = Inputaken.query.all()
-    if tracker_stats:
-            try:
-                line_plot(tracker_stats)       
-            except:
-                pie_chart(tracker_stats)
+def dashboard(sno):
+    tracker_stats = Inputaken.query.filter_by(tracker_id=str(sno)).all()
+    if type(tracker_stats[1].task_value) == str:
+            pie_chart(tracker_stats)       
+    else:
+            line_plot(tracker_stats)
     return render_template("chart.html")
 
 
