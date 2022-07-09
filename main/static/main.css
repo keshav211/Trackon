@@ -58,10 +58,36 @@
     }
 }
 
-.home-img{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 20px;
+.a-title{
+    color: #f3950d;
+    font-size: 4rem;
+    line-height: 1;
+    padding: 20% 20% 0% 15%;
 }
- 
+
+.about_introText{
+    line-height:1.5;
+    font-size: 1.8rem;
+    color: white;
+    margin: 5% 20% 5% 15%;  
+    text-align: left;  
+
+}
+
+.nav-link{
+    color: white;
+    margin: 10px;
+    font-size: large;
+  }
+
+.navbar-brand{
+    color: white;
+    font-size: 40px;
+    margin-left: 30px;
+}  
+
+.about_button{
+    font-size: large;
+    border-radius: 5px;
+    margin: 0% 20% 10% 15%; 
+}
