@@ -1,5 +1,6 @@
 import secrets
 import os
+from tkinter import Variable
 from flask import render_template, url_for, flash, redirect, request
 from matplotlib.style import use
 from main import app, db, bcrypt
@@ -146,15 +147,14 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/dashboard")
+@app.route("/log/dashboard/<int:sno>")
 @login_required
-def dashboard():
-    tracker_stats = Inputaken.query.all()
-    if tracker_stats:
-            try:
-                line_plot(tracker_stats)       
-            except:
-                pie_chart(tracker_stats)
+def dashboard(sno):
+    tracker_stats = Inputaken.query.filter_by(tracker_id=str(sno)).all()
+    if type(tracker_stats[1].task_value) == str:
+            pie_chart(tracker_stats)       
+    else:
+            line_plot(tracker_stats)
     return render_template("chart.html")
 
 

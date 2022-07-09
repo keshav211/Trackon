@@ -20,7 +20,7 @@ class Inputaken(db.Model):
         'tracker.sno'), nullable=False)
 
     def __repr__(self) -> str:
-        return f"(value:'{self.task_value}', timestamp:'{self.task_date}')"
+        return f"(value:'{self.task_value}', timestamp:'{self.task_date}', variable:'{self.task_variable}')" 
 
     def __getitem__(self, key):
         return self.__dict__[key]
