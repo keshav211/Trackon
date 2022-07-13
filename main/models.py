@@ -17,7 +17,7 @@ class Inputaken(db.Model):
     task_variable = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey(
-        'tracker.sno'), nullable=True)
+        'tracker.sno'), nullable=False)
 
     def __repr__(self) -> str:
         return f"(value:'{self.task_value}', timestamp:'{self.task_date}', variable:'{self.task_variable}')" 

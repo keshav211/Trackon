@@ -56,6 +56,10 @@ def track():
 @login_required
 def track_delete(sno):
     task_table = Tracker.query.filter_by(sno=sno).first()
+    log_entry=Inputaken.query.filter_by(tracker_id=sno,user_id=current_user.id).all()
+    for i in log_entry:
+        db.session.delete(i)
+        db.session.commit()
     db.session.delete(task_table)
     db.session.commit()
     return redirect("/track")
